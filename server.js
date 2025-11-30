@@ -262,7 +262,7 @@ app.get("/directors", async (req, res, next) => {
 // GET DIRECTOR BY ID
 app.get("/directors/:id", async (req, res, next) => {
   const sql = `
-    SELECT id, name
+    SELECT id, name, birthyear
     FROM directors
     WHERE id = $1
   `;
@@ -289,7 +289,7 @@ app.post("/directors", authenticateToken, async (req, res, next) => {
   }
 
   const sql = `
-    INSERT INTO directors (name, birthYear)
+    INSERT INTO directors (name, birthyear)
     VALUES ($1, $2)
     RETURNING *
   `;
@@ -307,17 +307,17 @@ app.put(
   "/directors/:id",
   [authenticateToken, authorizeRole("admin")],
   async (req, res, next) => {
-    const { name } = req.body;
+    const { name, birthYear } = req.body;
 
     const sql = `
       UPDATE directors
-      SET name = $1
-      WHERE id = $2
+      SET name = $1, birthyear = $2
+      WHERE id = $3
       RETURNING *
     `;
 
     try {
-      const result = await db.query(sql, [name, req.params.id]);
+      const result = await db.query(sql, [name, birthYear, req.params.id]);
 
       if (result.rowCount === 0) {
         return res.status(404).json({ error: "Director tidak ditemukan" });
