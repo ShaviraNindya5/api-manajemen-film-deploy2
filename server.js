@@ -246,7 +246,7 @@ app.delete(
 // GET ALL DIRECTORS
 app.get("/directors", async (req, res, next) => {
   const sql = `
-    SELECT id, name
+    SELECT id, name, birthyear
     FROM directors
     ORDER BY id ASC
   `;
@@ -262,7 +262,7 @@ app.get("/directors", async (req, res, next) => {
 // GET DIRECTOR BY ID
 app.get("/directors/:id", async (req, res, next) => {
   const sql = `
-    SELECT id, name, birthyear
+    SELECT id, name
     FROM directors
     WHERE id = $1
   `;
