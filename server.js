@@ -253,7 +253,7 @@ app.get("/directors", async (req, res, next) => {
 
   try {
     const result = await db.query(sql);
-    res.json(result.rows);
+    res.json(result.rows); // birthyear pasti ada karena NOT NULL di DB
   } catch (err) {
     next(err);
   }
@@ -274,7 +274,7 @@ app.get("/directors/:id", async (req, res, next) => {
       return res.status(404).json({ error: "Director tidak ditemukan" });
     }
 
-    res.json(result.rows[0]);
+    res.json(result.rows[0]); // birthyear pasti ada
   } catch (err) {
     next(err);
   }
@@ -286,6 +286,9 @@ app.post("/directors", authenticateToken, async (req, res, next) => {
 
   if (!name) {
     return res.status(400).json({ error: "name wajib diisi" });
+  }
+  if (birthYear === undefined || birthYear === null) {
+    return res.status(400).json({ error: "birthYear wajib diisi" });
   }
 
   const sql = `
@@ -308,6 +311,13 @@ app.put(
   [authenticateToken, authorizeRole("admin")],
   async (req, res, next) => {
     const { name, birthYear } = req.body;
+
+    if (!name) {
+      return res.status(400).json({ error: "name wajib diisi" });
+    }
+    if (birthYear === undefined || birthYear === null) {
+      return res.status(400).json({ error: "birthYear wajib diisi" });
+    }
 
     const sql = `
       UPDATE directors
