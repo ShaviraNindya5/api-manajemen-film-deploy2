@@ -262,7 +262,7 @@ app.get("/directors", async (req, res, next) => {
 // GET DIRECTOR BY ID
 app.get("/directors/:id", async (req, res, next) => {
   const sql = `
-    SELECT id, name
+    SELECT id, name, birthyear
     FROM directors
     WHERE id = $1
   `;
