@@ -358,10 +358,10 @@ app.delete(
         return res.status(404).json({ error: "Director tidak ditemukan" });
       }
 
-      res.status(204).send();
-    } catch (err) {
-      next(err);
-    }
+     res.status(200).json({ message: 'Director berhasil dihapus' }); // Perbaiki syntax dan ganti status
+  } catch (err) {
+    next(err);
+  }
   }
 );
 
